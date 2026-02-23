@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Business Profit & Loss Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 15px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 15px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Business Profit & Loss Tracker</h1>
+
+<div class="container">
+
+    <label>Product Name</label>
+    <input type="text" id="product">
+
+    <label>Cost Price (How much you bought it)</label>
+    <input type="number" id="cost">
+
+    <label>Selling Price</label>
+    <input type="number" id="selling">
+
+    <label>Quantity Sold</label>
+    <input type="number" id="quantity">
+
+    <button onclick="calculateProfit()">Add Sale</button>
+
+    <div class="result" id="summary"></div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Total Cost</th>
+                <th>Total Revenue</th>
+                <th>Profit / Loss</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+
+</div>
+
+<script>
+    let totalProfit = 0;
+
+    function calculateProfit() {
+        let product = document.getElementById("product").value;
+        let cost = parseFloat(document.getElementById("cost").value);
+        let selling = parseFloat(document.getElementById("selling").value);
+        let quantity = parseInt(document.getElementById("quantity").value);
+
+        if (!product || isNaN(cost) || isNaN(selling) || isNaN(quantity)) {
+            alert("Please fill all fields correctly.");
+            return;
+        }
+
+        let totalCost = cost * quantity;
+        let totalRevenue = selling * quantity;
+        let profit = totalRevenue - totalCost;
+
+        totalProfit += profit;
+
+        let table = document.getElementById("tableBody");
+        let row = table.insertRow();
+
+        row.insertCell(0).innerText = product;
+        row.insertCell(1).innerText = totalCost.toFixed(2);
+        row.insertCell(2).innerText = totalRevenue.toFixed(2);
+        row.insertCell(3).innerText = profit.toFixed(2);
+
+        let summary = document.getElementById("summary");
+
+        if (totalProfit > 0) {
+            summary.innerHTML = "Overall Profit: " + totalProfit.toFixed(2);
+            summary.style.color = "green";
+        } else if (totalProfit < 0) {
+            summary.innerHTML = "Overall Loss: " + totalProfit.toFixed(2);
+            summary.style.color = "red";
+        } else {
+            summary.innerHTML = "Break Even (No Profit, No Loss)";
+            summary.style.color = "black";
+        }
+
+        document.getElementById("product").value = "";
+        document.getElementById("cost").value = "";
+        document.getElementById("selling").value = "";
+        document.getElementById("quantity").value = "";
+    }
+</script>
+
+</body>
+</html>
